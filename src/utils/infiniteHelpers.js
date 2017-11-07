@@ -125,8 +125,8 @@ function generateComputedProps(
 
 function buildHeightStyle(height: number): CSSStyle {
   return {
-    width: '100%',
-    height: Math.ceil(height)
+    height: '100%',
+    width: Math.ceil(height)
   };
 }
 

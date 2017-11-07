@@ -165,12 +165,12 @@ class Infinite extends React.Component<
       utilities.unsubscribeFromScrollListener = () => {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = () => {
-        return this.scrollable ? this.scrollable.scrollTop : 0;
+        return this.scrollable ? this.scrollable.scrollLeft : 0;
       };
 
       utilities.setScrollTop = top => {
         if (this.scrollable) {
-          this.scrollable.scrollTop = top;
+          this.scrollable.scrollLeft = top;
         }
       };
       utilities.scrollShouldBeIgnored = event =>
