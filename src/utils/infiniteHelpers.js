@@ -123,11 +123,18 @@ function generateComputedProps(
   return Object.assign(oldProps, newProps);
 }
 
-function buildHeightStyle(height: number): CSSStyle {
-  return {
-    height: '100%',
-    width: Math.ceil(height)
-  };
+function buildHeightStyle(height: number, horizontal: boolean): CSSStyle {
+  if (horizontal) {
+    return {
+      height: '100%',
+      width: Math.ceil(height)
+    };
+  } else {
+    return {
+      width: '100%',
+      height: Math.ceil(height)
+    };
+  }
 }
 
 module.exports = {

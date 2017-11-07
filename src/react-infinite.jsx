@@ -22,6 +22,8 @@ class Infinite extends React.Component<
   static propTypes = {
     children: PropTypes.any,
 
+    axis: PropTypes.oneOf(['x', 'y']),
+
     handleScroll: PropTypes.func,
 
     // preloadBatchSize causes updates only to
@@ -87,6 +89,8 @@ class Infinite extends React.Component<
   }
 
   static defaultProps = {
+    axis: 'y',
+
     handleScroll: () => {},
 
     useWindowAsScrollContainer: false,
@@ -117,6 +121,8 @@ class Infinite extends React.Component<
     state.isScrolling = false;
 
     this.state = state;
+
+    this.horizontal = props.axis === 'x';
   }
 
   // Properties currently used but which may be
@@ -165,12 +171,22 @@ class Infinite extends React.Component<
       utilities.unsubscribeFromScrollListener = () => {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = () => {
-        return this.scrollable ? this.scrollable.scrollLeft : 0;
+        if (this.scrollable) {
+          return this.horizontal
+            ? this.scrollable.scrollLeft
+            : this.scrollable.scrollTop;
+        } else {
+          return 0;
+        }
       };
 
       utilities.setScrollTop = top => {
         if (this.scrollable) {
-          this.scrollable.scrollLeft = top;
+          if (this.horizontal) {
+            this.scrollable.scrollLeft = top;
+          } else {
+            this.scrollable.scrollTop = top;
+          }
         }
       };
       utilities.scrollShouldBeIgnored = event =>
@@ -480,7 +496,10 @@ class Infinite extends React.Component<
             ref={c => {
               this.topSpacer = c;
             }}
-            style={infiniteHelpers.buildHeightStyle(topSpacerHeight)}
+            style={infiniteHelpers.buildHeightStyle(
+              topSpacerHeight,
+              this.horizontal
+            )}
           />
           {this.computedProps.displayBottomUpwards && loadingSpinner}
           {displayables}
@@ -489,7 +508,10 @@ class Infinite extends React.Component<
             ref={c => {
               this.bottomSpacer = c;
             }}
-            style={infiniteHelpers.buildHeightStyle(bottomSpacerHeight)}
+            style={infiniteHelpers.buildHeightStyle(
+              bottomSpacerHeight,
+              this.horizontal
+            )}
           />
         </div>
       </div>
